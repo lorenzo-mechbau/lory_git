@@ -1,0 +1,115 @@
+- Push a change to remote as follows:
+
+zanon@cbm-pc-zanon ~/software/opencmiss/opencmiss/src/iron $ git add src/opencmiss_iron.f90
+
+zanon@cbm-pc-zanon ~/software/opencmiss/opencmiss/src/iron $ git commit
+[develop f156df3] Another comment...
+ 1 file changed, 2 insertions(+)
+
+zanon@cbm-pc-zanon ~/software/opencmiss/opencmiss/src/iron $ git push origin develop
+
+- HOW TO UPDATE origin WITH upstream LOCAL AND REMOTE:
+
+zanon@cbm-pc-zanon ~/software/opencmiss/opencmiss/src/iron $ git checkout develop
+Switched to branch 'develop'
+Your branch is up-to-date with 'remotes/origin/develop'.
+
+zanon@cbm-pc-zanon ~/software/opencmiss/opencmiss/src/iron $ git branch -v
+* develop        f156df3 Another comment...
+  origin/develop 369920a Merge branch 'develop' of github.com:OpenCMISS/iron into origin/develop
+
+Pull is the same as fetch + merge!!
+After an incorrect merge (conflicts etc.), which prevents further checkouts, run e.g.:
+
+git reset --hard cbm_software/avoid_global_to_local_map
+to revert to repository status. Or solve the conflict directly on file (conflicts are visible!!! <<<<HEAD etc.), then add and commit.
+
+zanon@cbm-pc-zanon ~/software/opencmiss/opencmiss/src/iron $ git pull prime develop
+zanon@cbm-pc-zanon ~/software/opencmiss/opencmiss/src/iron $ git push origin develop
+
+Make sure you are on the correct branch!!! E.g. it is incorrect:
+zanon@cbm-pc-zanon ~/software/opencmiss/opencmiss/src/iron $ git branch -v
+* (no branch, rebasing (null)) f156df3 Another comment...
+  develop f156df3 Another comment...
+
+- To create a new branch.
+
+Put yourself at the starting point:
+zanon@cbm-pc-zanon ~/software/opencmiss/opencmiss/src/iron $ git checkout  cbm_software/avoid_global_to_local_map
+
+Create a new local branch:
+
+zanon@cbm-pc-zanon ~/software/opencmiss/opencmiss/src/iron $ git checkout -b avoid_gtl_lz
+Switched to a new branch 'avoid_gtl_lz'
+
+Then push to the central repository (your own!!) and add remote tracking (-u):
+zanon@cbm-pc-zanon ~/software/opencmiss/opencmiss/src/iron $ git push -u origin avoid_gtl_lz
+
+- To delete a branch (local):
+zanon@cbm-pc-zanon ~/software/opencmiss/opencmiss/src/iron $ git branch -D develop
+- To delete a branch (remote):
+git push origin --delete develop
+
+- Remove untracked files:
+Show what will be deleted:
+git clean -n
+Delete the files:
+git clean -f
+
+- Add a different remote (e.g. to have examples from OpenCMISS-Examples and Chris in the same folder):
+Create a new branch:
+git checkout -b develop_Chris
+
+Add new remote with new name (prime_Chris) and source
+git remote add prime_Chris https://github.com/chrispbradley/burgers_dynamic.git
+
+Verify:
+git remote -v
+
+Remove in case of mistake:
+git remote rm origin222
+
+Fetch the needed branch of the repo:
+git fetch prime_Chris develop
+
+Merge to local directory
+git merge prime_Chris/develop
+
+Push:
+git push -u origin develop_Chris
+
+Attention!! Push to YOUR remote origin, the new one is (usually) read-only (another user, project, etc.).
+
+- GIT COMPARE A FILE BETWEEN COMMITS, BRANCHES ETC.
+
+Compare current status with last add / commit:
+git diff
+
+Compare current status with last commit of branch “test”:
+git diff test
+
+Compare between last commit of two branches “test” and “master”
+git diff test..master
+
+Ignore white spaces/lines:
+git diff -b -w
+
+Compare with previous commit:
+git diff HEAD^
+
+- GIT STASH
+
+git stash
+To be able to checkout a different branch without having to stage and commit. The branch goes back to committed state!
+
+git stash list
+Gives the list of stashed changes.
+
+git stash apply or git stash pop
+or
+git stash apply stash@{1} or git stash pop stash@{1}
+
+Applies the (latest) stash (careful!!! current branch and latest stash could be different!!! Then choose the correct stash number). Then you can keep on modifying, commit etc. Pop additionally removes the stash from the list.
+
+git stash clear
+Delete stash list
